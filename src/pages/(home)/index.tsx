@@ -283,7 +283,7 @@ const result = await pool.shutdown({ drain: true, timeout: 30_000 });
           className="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-fd-border p-10 text-center"
           style={{
             background:
-              'radial-gradient(ellipse 70% 90% at 50% 0%, hsla(38,80%,50%,0.07) 0%, transparent 70%), hsl(28,10%,8%)',
+              'radial-gradient(ellipse 70% 90% at 50% 0%, hsla(38,80%,50%,0.07) 0%, transparent 70%), var(--color-fd-card)',
           }}
         >
           <h2 className="mb-3 text-2xl font-bold text-fd-foreground sm:text-3xl">
