@@ -15,8 +15,8 @@ const CONFIG_CODE = `import { definePanqueueConfig } from "@panqueue/config";
 const config = definePanqueueConfig({
   redis: { url: "redis://localhost:6379" },
   queues: {
-    email:     { mode: "global" },
-    thumbnail: { mode: "global" },
+    email:     {},
+    thumbnail: {},
   },
 });`;
 
@@ -46,12 +46,6 @@ const emailWorker = defineWorker(config, "email", async (job) => {
 
 const pool = new WorkerPool(config, { workers: [emailWorker] });
 await pool.start();`;
-
-const SHUTDOWN_CODE = `// Force (default): atomically requeues all in-flight jobs, then disconnects
-await pool.shutdown();
-
-// Drain: waits for in-flight jobs with an optional timeout
-await pool.shutdown({ drain: true, timeout: 30_000 });`;
 
 function GithubIcon({ size = 16 }: { size?: number }) {
   return (
@@ -264,26 +258,22 @@ export default function Home() {
             <Tab value="Force (default)">
               <DynamicCodeBlock
                 lang="ts"
-                code={`// Atomically requeues in-flight jobs → disconnects immediately\nawait pool.shutdown();`}
+                code={`// Atomically requeues in-flight jobs → disconnects immediately
+const result = await pool.shutdown();
+// result: ShutdownResult { mode: "force", timedOut: false, unfinishedJobs: 0, requeued: 3 }`}
                 codeblock={{ title: 'shutdown.ts' }}
               />
             </Tab>
             <Tab value="Drain">
               <DynamicCodeBlock
                 lang="ts"
-                code={`// Waits for handlers; force-requeues on timeout\nawait pool.shutdown({ drain: true, timeout: 30_000 });`}
+                code={`// Waits for handlers; force-requeues on timeout
+const result = await pool.shutdown({ drain: true, timeout: 30_000 });
+// result: ShutdownResult { mode: "drain", timedOut: false, unfinishedJobs: 0, requeued: 1 }`}
                 codeblock={{ title: 'shutdown.ts' }}
               />
             </Tab>
           </Tabs>
-
-          <div className="mt-4">
-            <DynamicCodeBlock
-              lang="ts"
-              code={SHUTDOWN_CODE}
-              codeblock={{ title: 'Both return a ShutdownResult' }}
-            />
-          </div>
         </div>
       </section>
 
