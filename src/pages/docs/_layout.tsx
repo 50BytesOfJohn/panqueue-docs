@@ -1,11 +1,15 @@
-import type { ReactNode } from 'react';
-import { DocsLayout } from 'fumadocs-ui/layouts/docs';
-import { source } from '@/lib/source';
-import { baseOptions } from '@/lib/layout.shared';
-import { AISearch, AISearchPanel, AISearchTrigger } from '@/components/ai/search';
-import { MessageCircleIcon } from 'lucide-react';
-import { cn } from '@/lib/cn';
-import { buttonVariants } from 'fumadocs-ui/components/ui/button';
+import type { ReactNode } from "react";
+import { DocsLayout } from "fumadocs-ui/layouts/docs";
+import { source } from "@/lib/source";
+import { baseOptions } from "@/lib/layout.shared";
+import {
+  AISearch,
+  AISearchPanel,
+  AISearchTrigger,
+} from "@/components/ai/search";
+import { MessageCircleIcon } from "lucide-react";
+import { cn } from "@/lib/cn";
+import { buttonVariants } from "fumadocs-ui/components/ui/button";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -16,8 +20,8 @@ export default function Layout({ children }: { children: ReactNode }) {
           position="float"
           className={cn(
             buttonVariants({
-              variant: 'secondary',
-              className: 'text-fd-muted-foreground rounded-2xl',
+              variant: "secondary",
+              className: "text-fd-muted-foreground rounded-2xl",
             }),
           )}
         >
@@ -25,7 +29,6 @@ export default function Layout({ children }: { children: ReactNode }) {
           Ask AI
         </AISearchTrigger>
       </AISearch>
-
 
       {children}
     </DocsLayout>
